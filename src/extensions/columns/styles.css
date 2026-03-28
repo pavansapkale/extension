@@ -1,0 +1,283 @@
+/* Column Layout Styles - Confluence-like Design */
+
+/* Main columns container */
+.prosemirror-columns {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin: 16px 0;
+  position: relative;
+}
+
+/* Individual column */
+.prosemirror-column {
+  flex: 1;
+  min-width: 50px;
+  padding: 8px;
+  background: transparent;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.prosemirror-column:hover {
+  background-color: rgba(9, 30, 66, 0.04);
+}
+
+/* Column resize handle */
+.column-resize-handle {
+  position: absolute;
+  right: -8px;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  cursor: col-resize;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.prosemirror-column:hover .column-resize-handle {
+  opacity: 1;
+}
+
+.column-resize-handle::after {
+  content: '';
+  width: 2px;
+  height: 24px;
+  background-color: #dfe1e6;
+  border-radius: 1px;
+  transition: background-color 0.2s ease;
+}
+
+.column-resize-handle:hover::after {
+  background-color: #4c9aff;
+}
+
+/* Column container hover state */
+.prosemirror-columns:hover .prosemirror-column {
+  border-left: 2px solid transparent;
+}
+
+/* Add column button */
+.add-column-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -20px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 1px solid #dfe1e6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 5;
+}
+
+.prosemirror-columns:hover .add-column-btn {
+  opacity: 1;
+}
+
+.add-column-btn:hover {
+  background-color: #4c9aff;
+  border-color: #4c9aff;
+  color: white;
+}
+
+.add-column-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Column layout variations */
+.prosemirror-columns[data-layout="two-equal"] {
+  grid-template-columns: 1fr 1fr;
+}
+
+.prosemirror-columns[data-layout="three-equal"] {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.prosemirror-columns[data-layout="sidebar-main"] {
+  grid-template-columns: 1fr 2fr;
+}
+
+.prosemirror-columns[data-layout="main-sidebar"] {
+  grid-template-columns: 2fr 1fr;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .prosemirror-columns {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .prosemirror-column {
+    min-width: 100%;
+  }
+
+  .column-resize-handle {
+    display: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .prosemirror-column:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .column-resize-handle::after {
+    background-color: #4a5568;
+  }
+
+  .column-resize-handle:hover::after {
+    background-color: #63b3ed;
+  }
+
+  .add-column-btn {
+    background-color: #1a202c;
+    border-color: #4a5568;
+  }
+
+  .add-column-btn:hover {
+    background-color: #4299e1;
+    border-color: #4299e1;
+  }
+}
+
+/* Focus states for accessibility */
+.prosemirror-column:focus-within {
+  outline: 2px solid #4c9aff;
+  outline-offset: -2px;
+}
+
+/* Content inside columns */
+.prosemirror-column > * {
+  margin: 0;
+}
+
+.prosemirror-column p {
+  margin: 8px 0;
+}
+
+.prosemirror-column:first-child {
+  margin-left: 0;
+}
+
+.prosemirror-column:last-child {
+  margin-right: 0;
+}
+
+/* Remove resize handle from last column */
+.prosemirror-column:last-child .column-resize-handle {
+  display: none;
+}
+
+/* Dragging state */
+.prosemirror-column.is-dragging {
+  opacity: 0.5;
+  background-color: rgba(76, 154, 255, 0.1);
+}
+
+/* Selection indicator */
+.prosemirror-column-selected {
+  background-color: rgba(76, 154, 255, 0.08);
+  border: 2px solid #4c9aff;
+}
+
+/* Column actions toolbar */
+.column-actions {
+  position: absolute;
+  top: -32px;
+  right: 0;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background-color: white;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 20;
+}
+
+.prosemirror-column:hover .column-actions {
+  opacity: 1;
+}
+
+.column-actions button {
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #42526e;
+  transition: all 0.2s ease;
+}
+
+.column-actions button:hover {
+  background-color: #f4f5f7;
+  color: #4c9aff;
+}
+
+.column-actions button.delete {
+  color: #de350b;
+}
+
+.column-actions button.delete:hover {
+  background-color: #ffebe6;
+}
+
+/* Placeholder text in empty columns */
+.prosemirror-column:empty::before {
+  content: 'Type something...';
+  color: #a0aec0;
+  pointer-events: none;
+}
+
+/* Animation for adding columns */
+@keyframes columnSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.prosemirror-column.new-column {
+  animation: columnSlideIn 0.3s ease;
+}
+
+/* Print styles */
+@media print {
+  .prosemirror-columns {
+    display: block;
+  }
+
+  .prosemirror-column {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .column-resize-handle,
+  .add-column-btn,
+  .column-actions {
+    display: none !important;
+  }
+}
