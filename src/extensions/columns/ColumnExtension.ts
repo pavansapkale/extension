@@ -1,5 +1,7 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import type { EditorState, Transaction } from '@tiptap/pm/state';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
 
 export interface ColumnOptions {
   HTMLAttributes: Record<string, any>;
@@ -71,11 +73,11 @@ export const Column = Node.create<ColumnOptions>({
 
           const $pos = state.doc.resolve(pos);
           
-          // Check if we're inside a column_container
+          // Check if we're inside a columns container
           let containerPos = -1;
           for (let depth = $pos.depth; depth > 0; depth--) {
             const node = $pos.node(depth);
-            if (node.type.name === 'column_container') {
+            if (node.type.name === 'columns') {
               containerPos = $pos.before(depth);
               break;
             }
@@ -158,5 +160,9 @@ export const Column = Node.create<ColumnOptions>({
       }),
       0,
     ];
+  },
+
+  addProseMirrorPlugins() {
+    return [];
   },
 });

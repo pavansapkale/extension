@@ -8,7 +8,7 @@ export interface ColumnResizeOptions {
   columnMinWidth: number;
 }
 
-interface ResizeState {
+interface ResizeStateData {
   active: boolean;
   columnPos: number | null;
   startX: number;
@@ -16,9 +16,9 @@ interface ResizeState {
 }
 
 export const createResizePlugin = (options: ColumnResizeOptions) => {
-  const pluginKey = new PluginKey<ResizeState>('columnResize');
+  const pluginKey = new PluginKey<ResizeStateData>('columnResize');
 
-  return new Plugin<ResizeState>({
+  return new Plugin<ResizeStateData>({
     key: pluginKey,
     state: {
       init() {
@@ -72,7 +72,7 @@ export const createResizePlugin = (options: ColumnResizeOptions) => {
           const handleMouseMove = (e: MouseEvent) => {
             e.preventDefault();
             const resizeState = pluginKey.getState(view.state);
-            if (!resizeState.active || resizeState.columnPos === null) {
+            if (!resizeState || !resizeState.active || resizeState.columnPos === null) {
               return;
             }
 
